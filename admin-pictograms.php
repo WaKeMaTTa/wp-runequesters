@@ -127,29 +127,45 @@ if ( isset($_GET["action"]) AND ($_GET["action"] == 'add') AND current_user_can(
 
 		$table = $wpdb->prefix . WPRQ_NAME . '_maps_pictograms';
 
-		$data["icon_author"] = get_current_user_id();
-		$format[] = '%d';
+		// Exist some pictogram with that slug
+		$slug_exist = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM " . $table . " WHERE icon_slug = '%s'",
+				$_POST["slug"]
+			)		
+		);
 
-		$data["icon_title"] = $_POST["title"];
-		$format[] = '%s';
+		if ( $slug_exist !== null ) {
+			$form->add_error('error', sprintf(
+				__( '<strong>Oh snap!</strong> The slug "%s" Walready exists in database.', WPRQ_TEXTDOMAIN ),
+				$_POST["slug"]
+			));
 
-		$data["icon_slug"] = $_POST["slug"];
-		$format[] = '%s';
-
-		$data["icon_image"] = $form->file_upload["upload_pictogram"]["file_name"];
-		$format[] = '%s';
-
-		$data["icon_date_created"] = date("Y-m-d H:i:s");
-		$format[] = '%s';
-
-		$insert_map = $wpdb->insert( $table, $data, $format );
-
-		if ( $insert_map === false ) {
-			$form->add_error('error', __( "<strong>Oh snap!</strong> We couldn't insert pictogram in database.", WPRQ_TEXTDOMAIN) );
 		} else {
-			$show_list_pictograms = true;
-			$msg["type"]	= 'success';
-			$msg["message"] = __( "<strong>Well done!</strong> The pictogram was saved correctly.", WPRQ_TEXTDOMAIN );
+			$data["icon_author"] = get_current_user_id();
+			$format[] = '%d';
+
+			$data["icon_title"] = $_POST["title"];
+			$format[] = '%s';
+
+			$data["icon_slug"] = $_POST["slug"];
+			$format[] = '%s';
+
+			$data["icon_image"] = $form->file_upload["upload_pictogram"]["file_name"];
+			$format[] = '%s';
+
+			$data["icon_date_created"] = date("Y-m-d H:i:s");
+			$format[] = '%s';
+
+			$insert_map = $wpdb->insert( $table, $data, $format );
+
+			if ( $insert_map === false ) {
+				$form->add_error('error', __( "<strong>Oh snap!</strong> We couldn't insert pictogram in database.", WPRQ_TEXTDOMAIN) );
+			} else {
+				$show_list_pictograms = true;
+				$msg["type"]	= 'success';
+				$msg["message"] = __( "<strong>Well done!</strong> The pictogram was saved correctly.", WPRQ_TEXTDOMAIN );
+			}
 		}
 
 	}
