@@ -37,14 +37,19 @@ function wprq_generate_form_for_points_map($point) {
 	$response .= '<label for="icon" id="label_icon">' . __('Icon' , WPRQ_TEXTDOMAIN) . '</label>';
 	$response .= '<select name="icon" id="icon" class="control">';
 
-	$icons = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . WPRQ_NAME . '_points_icons' . " " );	
+	$icons = $wpdb->get_results( "SELECT * FROM " . $wpdb->prefix . WPRQ_NAME . '_maps_pictograms' . " " );	
 
 	$selected = false;
 
 	foreach ( $icons as $key => $icon) {
-		$response .= '<option value="' . $icon->icon_slug . '"' . ( ($icon->icon_slug == $point->point_icon) ? ' selected="selected"' : '' ) . '>' . $icon->icon_title . '</option>';
-		if ($icon->icon_slug == $point->point_icon)
+		$response .= '<option value="' . $icon->icon_slug . '"';
+		
+		if ($icon->icon_slug == $point->point_icon) {
+			$response .= ' selected="selected"';
 			$selected = true;
+		}
+		
+		$response .= '>' . $icon->icon_title . '</option>';
 	}
 
 	$response .= '<option value="default"' . ( ($selected == false) ? ' selected="selected"' : '' ) . '>' . __('Default' , WPRQ_TEXTDOMAIN) . '</option>';
@@ -60,6 +65,24 @@ function wprq_generate_form_for_points_map($point) {
 	$response .= '<input type="button" name="btn-update-point" id="btn-update-point" onclick="update_point();" value="' . __('Save' , WPRQ_TEXTDOMAIN) . '" class="submit button button-primary"> ';
 	$response .= '<input type="button" name="btn-delete-point" id="btn-delete-point" value="' . __('Delete' , WPRQ_TEXTDOMAIN) . '" class="submit button button-delete" onclick="delete_point(' . $point->point_id . ');"">';
 	$response .= '</form>';
+
+	return $response;
+}
+
+function wprq_get_url_pictogram_map($point) {
+	global $wpdb;
+
+	$response = 'https://mts.googleapis.com/vt/icon/name=icons/spotlight/spotlight-poi.png&scale=1';
+
+	$icon = $wpdb->get_row( "SELECT icon_image FROM " . $wpdb->prefix . WPRQ_NAME . '_maps_pictograms' . " WHERE icon_slug = '" . $point->point_icon . "'" );	
+
+	if ( $icon === null )
+		return $response;
+
+	if ( !file_exists( WPRQ_UPLOADS_DIR . 'pictograms/' . $icon->icon_image ) )
+		return $response;
+
+	$response = WPRQ_URL_UPLOADS_DIR . 'pictograms/' . $icon->icon_image;
 
 	return $response;
 }

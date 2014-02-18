@@ -103,6 +103,7 @@ function wprq_activation() {
 	$dirs["characters_avatars"] = WPRQ_UPLOADS_DIR . 'characters/avatars/';
 	$dirs["characters_pdfs"] 	= WPRQ_UPLOADS_DIR . 'characters/pdfs/';
 	$dirs["maps"] 				= WPRQ_UPLOADS_DIR . 'maps/';
+	$dirs["pictograms"] 		= WPRQ_UPLOADS_DIR . 'pictograms/';
 
 	// Makeing a folders for upload imagens and more
 	foreach ($dirs as $path) {
@@ -175,11 +176,14 @@ function wprq_create_database_table() {
 		PRIMARY KEY  (point_id)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;";
 
-	$sqls["points_icons"] = "CREATE TABLE " . $prefix . "points_icons (
+	$sqls["maps_pictograms"] = "CREATE TABLE " . $prefix . "maps_pictograms (
 		icon_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 		icon_title varchar(50) NOT NULL,
 		icon_slug varchar(50) NOT NULL,
 		icon_image varchar(60) NOT NULL,
+		icon_author bigint(20) unsigned NOT NULL,
+		icon_date_created datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+		icon_date_modified timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 		PRIMARY KEY  (icon_id)
 	) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;";
 

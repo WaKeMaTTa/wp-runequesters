@@ -112,6 +112,15 @@ function wprq_admin_menu() {
 		'wprq/maps',									# menu_slug
 		'wprq_maps'										# function (optional)
 	);
+
+	$page["pictograms"] = add_submenu_page(
+		'wprq',											# parent_slug
+		__( 'Pictograms (for maps)', WPRQ_TEXTDOMAIN ),	# page_title
+		__( 'Pictograms (for maps)', WPRQ_TEXTDOMAIN ),	# menu_title
+		'manage_options',								# capability
+		'wprq/pictograms',								# menu_slug
+		'wprq_pictograms'								# function (optional)
+	);
 	
 	// Register CSS and Js			
 	foreach ($page as &$details) {
@@ -133,11 +142,10 @@ function wprq_admin_stylesheet() {
 
 // Scripts
 function wprq_admin_script() {
+
+
 	wp_register_script( 'script-admin.js', WPRQ_URL . 'assets/js/script-admin.js', array(), '1.0.0', true);
 	wp_enqueue_script( 'script-admin.js' );
-
-	wp_register_script( 'zebra-form.js', WPRQ_URL . 'assets/js/zebra-form.min.js', array(), '1.0.0', true);
-	wp_enqueue_script( 'zebra-form.js' );
 
 	wp_register_script( 'google-maps.js', 'https://maps.googleapis.com/maps/api/js?libraries=geometry&sensor=false', array(), '3.x.x', false);
 	wp_enqueue_script( 'google-maps.js' );
@@ -160,6 +168,14 @@ function wprq_maps() {
 	// Page Main for Player
 	require( plugin_dir_path(__FILE__) . 'admin-maps.php' );
 }
+
+// Function Page Pictograms
+function wprq_pictograms() {
+	// Page Main for Player
+	require( plugin_dir_path(__FILE__) . 'admin-pictograms.php' );
+}
+
+
 
 
 /***************************************************************
@@ -197,6 +213,7 @@ function wprq_get_all_points_map_callback() {
 		$response["data"][$key]["url"] 			= $point->point_url;
 		$response["data"][$key]["latitude"] 	= $point->point_latitude;
 		$response["data"][$key]["longitude"] 	= $point->point_longitude;
+		$response["data"][$key]["icon_url"] 	= wprq_get_url_pictogram_map($point);
 		$response["data"][$key]["html"] 		= wprq_generate_form_for_points_map($point);
 	}
 
@@ -227,7 +244,7 @@ function wprq_insert_point_map_callback() {
 		$format[] = '%d';
 
 		$data["point_icon"] = 'default';
-		$format[] = '%d';
+		$format[] = '%s';
 
 		$data["point_latitude"] = $_REQUEST["latitude"];
 		$format[] = '%s';
@@ -265,6 +282,7 @@ function wprq_insert_point_map_callback() {
 			$response["data"]["url"] 			= $point->point_url;
 			$response["data"]["latitude"] 		= $point->point_latitude;
 			$response["data"]["longitude"] 		= $point->point_longitude;
+			$response["data"]["icon_url"] 		= wprq_get_url_pictogram_map($point);
 			$response["data"]["html"] 			= wprq_generate_form_for_points_map($point);
 
 			$table2 = $wpdb->prefix . WPRQ_NAME . '_maps';
@@ -325,7 +343,7 @@ function wprq_update_point_map_callback() {
 
 	if ( isset( $_REQUEST["icon"]) ) {
 		$data["point_icon"] = $_REQUEST["icon"];
-		$format[] = '%d';
+		$format[] = '%s';
 	}
 
 	if ( isset( $_REQUEST["latitude"]) ) {
@@ -380,6 +398,7 @@ function wprq_update_point_map_callback() {
 		$response["data"]["url"] 			= $point->point_url;
 		$response["data"]["latitude"] 		= $point->point_latitude;
 		$response["data"]["longitude"] 		= $point->point_longitude;
+		$response["data"]["icon_url"] 		= wprq_get_url_pictogram_map($point);
 		$response["data"]["html"] 			= wprq_generate_form_for_points_map($point);
 
 	} else {

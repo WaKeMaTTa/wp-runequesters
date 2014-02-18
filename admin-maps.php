@@ -419,11 +419,11 @@ if ( isset($_GET["action"]) AND ($_GET["action"] == 'points') AND is_numeric($_G
 						position: new google.maps.LatLng( point["latitude"] , point["longitude"] ),
 						map: map,
 						animation: google.maps.Animation.DROP,
-						icon: 'http://www.google.com/mapfiles/markerA.png',
+						icon: point["icon_url"],
 						title: point["title"],
 						draggable: true,
 						html: '<div class=\"info-bubble\" id="point-' + point["id"] + '">' + point["html"] + '</div>'
-					});;
+					});
 
 					// Create a infowindow
 					var contentString = "";
@@ -650,7 +650,7 @@ if ( isset($_GET["action"]) AND ($_GET["action"] == 'points') AND is_numeric($_G
 			// ]]>
 
 			</script>
-			<p>To add points, you must select this checkbox <input type="checkbox" id="allow-add-points" name="allow-add-points" value="true"> and you can add items by clicking the map.</p>
+			<p><?php _e('To add points, you must select this checkbox <input type="checkbox" id="allow-add-points" name="allow-add-points" value="true"> and you can add items by clicking the map.</p>', WPRQ_TEXTDOMAIN); ?>
 			<div id="canvas-map" style="display: inline-block;width:100%;height:500px;border-color: #ddd;box-shadow: inset 0 1px 2px rgba(0,0,0,.07);"></div>
 
 		<?php
@@ -708,7 +708,7 @@ if ( isset($_GET["action"]) AND ($_GET["action"] == 'delete') AND is_numeric($_G
 
 			wprq_deleter_dir( WPRQ_UPLOADS_DIR . 'maps/' . $map_row->map_dir . '/');
 
-			$wpdb->query( "DELETE FROM " . $wpdb->prefix . WPRQ_NAME . '_maps_points' . " WHERE point_map NOT IN ( SELECT m.map_id FROM " . $table . " as m )" );
+			$wpdb->query( "DELETE FROM " . $wpdb->prefix . WPRQ_NAME . '_maps_points' . " WHERE point_map NOT IN ( SELECT map_id FROM " . $table . " )" );
 
 		}
 
