@@ -27,8 +27,6 @@ if ( !function_exists( 'add_action' ) ) {
 
 			<ul class="actions-list">
 
-				<!--li><a href="" class="action-icon action-add-character"><?php _e( 'Create your character', WPRQ_TEXTDOMAIN ); ?></a></li-->
-
 				<ul class="todo">
 
 					<li>
@@ -49,6 +47,12 @@ if ( !function_exists( 'add_action' ) ) {
 
 					</li>
 
+				<?php
+
+				if ( current_user_can('manage_options') ) {
+
+					?>
+
 					<li>
 
 						<a href="<?php echo admin_url('admin.php?page=' . WPRQ_NAME . '/maps'); ?>">
@@ -66,6 +70,12 @@ if ( !function_exists( 'add_action' ) ) {
 						</a>
 
 					</li>
+
+					<?php
+
+				}
+
+				?>
 
 				</ul>
 			
