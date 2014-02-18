@@ -217,7 +217,7 @@ class WP_List_Table_Characters extends WP_List_Table {
 	 **************************************************************************/
 	function get_sortable_columns() {
 		$sortable_columns = array(
-			'col_date'	 => array('character_date_modified	', false),	 //true means it's already sorted
+			'col_date'	 => array('character_date_modified', false),	 //true means it's already sorted
 		);
 		return $sortable_columns;
 	}
