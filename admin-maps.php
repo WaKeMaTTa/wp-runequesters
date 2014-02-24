@@ -749,7 +749,7 @@ if ( $show_list_maps == true ) {
 		<?php
 
 		if ( !empty($msg) )
-			message_response($msg["type"], $msg["message"]);
+			wprq_message_response($msg["type"], $msg["message"]);
 
 		$list_table_maps->display();
 

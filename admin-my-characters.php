@@ -805,7 +805,7 @@ if ( $show_list_characters == true ) {
 	<?php
 
 	if ( !empty($msg) )
-		message_response($msg["type"], $msg["message"]);
+		wprq_message_response($msg["type"], $msg["message"]);
 
 	$list_table_characters->display();
 

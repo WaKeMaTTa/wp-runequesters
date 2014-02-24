@@ -99,7 +99,7 @@ class WP_List_Table_Maps extends WP_List_Table {
 			__( 'Points', WPRQ_TEXTDOMAIN )
 		);
 
-		if( current_user_can( 'manage_options' ) OR (get_user_created_map($item['map_id']) == get_current_user_id()) )
+		if( current_user_can( 'manage_options' ) OR (wprq_get_user_created_map($item['map_id']) == get_current_user_id()) )
 			$actions["edit"] = sprintf('<a href="?page=%s&action=%s&map=%s">%s</a>',
 				$_REQUEST['page'],
 				'edit',

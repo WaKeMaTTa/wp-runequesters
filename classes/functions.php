@@ -7,14 +7,14 @@
  * Functions for "Maps"
  ***************************************************************/
 
-function get_user_created_map($map_id) {
+function wprq_get_user_created_map($map_id) {
 	global $wpdb;
 	$table = $wpdb->prefix . WPRQ_NAME . '_maps';
 	$select_id_author = $wpdb->get_row("SELECT map_author FROM " . $table . " WHERE map_id = '" . $map_id . "'");
 	return $select_id_author;
 }
 
-function message_response($type, $msg, $print=true) {
+function wprq_message_response($type, $msg, $print=true) {
 	$html = '<div class="updated alert ' . $type . ' fade in">';
 	$html .= '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' . $msg;
 	$html .= '</div>';
