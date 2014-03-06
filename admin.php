@@ -175,9 +175,6 @@ function wprq_pictograms() {
 	require( plugin_dir_path(__FILE__) . 'admin-pictograms.php' );
 }
 
-
-
-
 /***************************************************************
  * Ajax Functions MAP
  ***************************************************************/
@@ -214,7 +211,12 @@ function wprq_get_all_points_map_callback() {
 		$response["data"][$key]["latitude"] 	= $point->point_latitude;
 		$response["data"][$key]["longitude"] 	= $point->point_longitude;
 		$response["data"][$key]["icon_url"] 	= wprq_get_url_pictogram_map($point);
-		$response["data"][$key]["html"] 		= wprq_generate_form_for_points_map($point);
+		
+		if (isset($_REQUEST["not_form"])){
+			$response["data"][$key]["html"] 	= wprq_generate_display_for_points_map($point);
+		} else {
+			$response["data"][$key]["html"] 	= wprq_generate_form_for_points_map($point);
+		}
 	}
 
 	header( "Content-Type: application/json" );

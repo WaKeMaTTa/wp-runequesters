@@ -80,6 +80,7 @@ add_option( WPRQ_VERSION_KEY, WPRQ_VERSION_VALUE );
 
 // Include a files
 require_once dirname( __FILE__ ) . '/admin.php';
+require_once dirname( __FILE__ ) . '/shortcode.php';
 #include_once dirname( __FILE__ ) . '/widget.php';
 
 // Function to activate the plugin

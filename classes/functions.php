@@ -69,6 +69,22 @@ function wprq_generate_form_for_points_map($point) {
 	return $response;
 }
 
+function wprq_generate_display_for_points_map($point) {
+	global $wpdb;
+
+	$response = '';
+	$response .= '<div>';
+	$response .= '<p><strong>' . $point->point_title . '</strong></p>';
+	$response .= '<p style="white-space: pre-wrap;">' . $point->point_description . '</p>';
+
+	if ($point->point_url != '')
+		$response .= '<p><a href="' . $point->point_url . '" target="_blank">' . __('Read more' , WPRQ_TEXTDOMAIN) . '</a></p>';
+
+	$response .= '</div>';
+
+	return $response;
+}
+
 function wprq_get_url_pictogram_map($point) {
 	global $wpdb;
 
